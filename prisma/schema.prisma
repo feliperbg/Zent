@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum PlanType {
+  FREE
+  PRO
+}
+
+enum TxType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+enum FuelType {
+  GASOLINE
+  ETHANOL
+  DIESEL
+  ELECTRIC
+}
+
+enum PlaceType {
+  HOME
+  WORK
+  STORE
+  OTHER
+}
+
+// Models
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  plan      PlanType @default(FREE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transactions Transaction[]
+  goals        Goal[]
+  vehicles     Vehicle[]
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  amount      Decimal
+  type        TxType
+  description String?
+  date        DateTime @default(now())
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+
+  placeId     String?
+  place       Place?    @relation(fields: [placeId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String
+  icon        String?  // lucide icon name
+  
+  transactions Transaction[]
+}
+
+model Goal {
+  id          String   @id @default(uuid())
+  name        String
+  targetAmount Decimal
+  currentAmount Decimal @default(0)
+  deadline    DateTime?
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Vehicle {
+  id          String   @id @default(uuid())
+  model       String
+  fuelType    FuelType
+  avgConsumption Float // km/l
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Place {
+  id          String   @id @default(uuid())
+  name        String
+  type        PlaceType
+  latitude    Float
+  longitude   Float
+
+  transactions Transaction[]
+}
