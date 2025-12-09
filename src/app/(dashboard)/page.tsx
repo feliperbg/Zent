@@ -4,6 +4,8 @@ import { TransactionForm } from './_components/TransactionForm';
 // Mock user ID for demonstration
 const MOCK_USER_ID = 'demo-user-123';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
     // VIEW calls SERVICE directly for read operations (Server Components pattern)
     const balance = await financeService.calculateBalance(MOCK_USER_ID);
