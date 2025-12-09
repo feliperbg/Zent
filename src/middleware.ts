@@ -1,49 +1,37 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { verifyToken } from '@/lib/auth';
 
-export function middleware(request: NextRequest) {
-    // Use secure cookie name in production usually, but sticking to next-auth common default
-    // Adjust based on your next-auth configuration
-    const sessionToken = request.cookies.get('authjs.session-token') ||
-        request.cookies.get('__Secure-authjs.session-token') ||
-        request.cookies.get('next-auth.session-token');
+export async function middleware(request: NextRequest) {
+    const token = request.cookies.get('token')?.value;
 
-    const { pathname } = request.nextUrl;
-
-    const isAuthPage = pathname.startsWith('/login') || pathname.startsWith('/register');
-    const isPublicApi = pathname.startsWith('/api/auth');
-    const isStatic = pathname.match(/\.(.*)$/); // Avoid protecting static assets
-
-    if (isStatic || isPublicApi) {
-        return NextResponse.next();
-    }
-
-    // Redirect authenticated users away from auth pages
-    if (isAuthPage) {
-        if (sessionToken) {
-            return NextResponse.redirect(new URL('/dashboard', request.url));
+    // Protect dashboard routes
+    if (request.nextUrl.pathname.startsWith('/dashboard')) {
+        if (!token) {
+            return NextResponse.redirect(new URL('/login', request.url));
         }
-        return NextResponse.next();
+
+        const payload = await verifyToken(token);
+
+        if (!payload) {
+            // Token invalid or expired
+            return NextResponse.redirect(new URL('/login', request.url));
+        }
     }
 
-    // Redirect unauthenticated users to login
-    if (!sessionToken) {
-        const loginUrl = new URL('/login', request.url);
-        loginUrl.searchParams.set('callbackUrl', pathname);
-        return NextResponse.redirect(loginUrl);
+    // Redirect to dashboard if already logged in and accessing auth pages
+    if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register')) {
+        if (token) {
+            const payload = await verifyToken(token);
+            if (payload) {
+                return NextResponse.redirect(new URL('/dashboard', request.url));
+            }
+        }
     }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: [
-        /*
-         * Match all request paths except for the ones starting with:
-         * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico (favicon file)
-         */
-        '/((?!_next/static|_next/image|favicon.ico).*)',
-    ],
+    matcher: ['/dashboard/:path*', '/login', '/register'],
 };
