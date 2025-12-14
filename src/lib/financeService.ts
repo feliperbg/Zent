@@ -2,6 +2,23 @@ import prisma from '@/lib/prisma';
 import { TxType } from '@prisma/client';
 
 export const financeService = {
+    async calculateBalance(userId: string) {
+        const balanceStats = await prisma.transaction.groupBy({
+            by: ['type'],
+            where: { userId },
+            _sum: { amount: true }
+        });
+
+        let totalBalance = 0;
+        balanceStats.forEach(stat => {
+            const amount = Number(stat._sum.amount || 0);
+            if (stat.type === 'INCOME') totalBalance += amount;
+            else if (stat.type === 'EXPENSE') totalBalance -= amount;
+        });
+
+        return totalBalance;
+    },
+
     async getDashboardData(userId: string) {
         const today = new Date();
         const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -92,7 +109,9 @@ export const financeService = {
             goals,
             chartData,
             recentTransactions,
-            routeEconomy: 42.50 // Mocked Value
+            // TODO: Implement Real Calculation based on Google Maps API or Distance Matrix
+            // For now, return 0 or a placeholder unless user has work address
+            routeEconomy: 0
         };
     }
 }

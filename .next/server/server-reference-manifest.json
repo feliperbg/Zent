@@ -1,5 +1,81 @@
 {
-  "node": {},
+  "node": {
+    "60f147d3d5397057db65f8e0fccb3b07e28b8caee3": {
+      "workers": {
+        "app/(dashboard)/profile/page": {
+          "moduleId": "[project]/.next-internal/server/app/(dashboard)/profile/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(dashboard)/profile/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "updatePersonalData",
+          "filename": "src/app/(dashboard)/profile/actions.ts"
+        }
+      },
+      "layer": {
+        "app/(dashboard)/profile/page": "action-browser"
+      },
+      "filename": "src/app/(dashboard)/profile/actions.ts",
+      "exportedName": "updatePersonalData"
+    },
+    "4023c1c91d4adab2ab751faf438754817fea66c4a1": {
+      "workers": {
+        "app/(dashboard)/profile/page": {
+          "moduleId": "[project]/.next-internal/server/app/(dashboard)/profile/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(dashboard)/profile/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "sendVerificationEmail",
+          "filename": "src/app/(dashboard)/profile/actions.ts"
+        }
+      },
+      "layer": {
+        "app/(dashboard)/profile/page": "action-browser"
+      },
+      "filename": "src/app/(dashboard)/profile/actions.ts",
+      "exportedName": "sendVerificationEmail"
+    },
+    "606fbde41b3cc357f42a1b7ac7b88c13f8333b874b": {
+      "workers": {
+        "app/(dashboard)/profile/page": {
+          "moduleId": "[project]/.next-internal/server/app/(dashboard)/profile/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(dashboard)/profile/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "updateProfile",
+          "filename": "src/app/(dashboard)/profile/actions.ts"
+        }
+      },
+      "layer": {
+        "app/(dashboard)/profile/page": "action-browser"
+      },
+      "filename": "src/app/(dashboard)/profile/actions.ts",
+      "exportedName": "updateProfile"
+    },
+    "60a8ab55b8cccd044aa42fde6ce4568440a91ab74d": {
+      "workers": {
+        "app/(dashboard)/profile/page": {
+          "moduleId": "[project]/.next-internal/server/app/(dashboard)/profile/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(dashboard)/profile/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "addVehicle",
+          "filename": "src/app/(dashboard)/profile/actions.ts"
+        }
+      },
+      "layer": {
+        "app/(dashboard)/profile/page": "action-browser"
+      },
+      "filename": "src/app/(dashboard)/profile/actions.ts",
+      "exportedName": "addVehicle"
+    },
+    "40863b10eccfafee0089500dd211186543e7786992": {
+      "workers": {
+        "app/(dashboard)/profile/page": {
+          "moduleId": "[project]/.next-internal/server/app/(dashboard)/profile/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/app/(dashboard)/profile/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "deleteVehicle",
+          "filename": "src/app/(dashboard)/profile/actions.ts"
+        }
+      },
+      "layer": {
+        "app/(dashboard)/profile/page": "action-browser"
+      },
+      "filename": "src/app/(dashboard)/profile/actions.ts",
+      "exportedName": "deleteVehicle"
+    }
+  },
   "edge": {},
   "encryptionKey": "W/qlblqChW9bRqgwTkMnim/RO9N9nB0iCt/TwDY5CYU="
 }

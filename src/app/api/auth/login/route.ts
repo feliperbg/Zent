@@ -39,6 +39,8 @@ export async function POST(request: Request) {
         const token = await signToken({
             id: user.id,
             email: user.email,
+            name: user.name,
+            plan: user.plan,
         });
 
         // Set HTTP-Only Cookie

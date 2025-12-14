@@ -12,10 +12,24 @@ model User {
   id           String        @id @default(uuid())
   email        String        @unique
   name         String?
+  cpf          String?       @unique
+  birthDate    DateTime?
+  emailVerified DateTime?
+  verificationToken String?
   password     String
   plan         PlanType      @default(FREE)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+  
+  // Address Fields
+  cep          String?
+  street       String?
+  number       String?
+  complement   String?
+  neighborhood String?
+  city         String?
+  state        String?
+  
   goals        Goal[]
   transactions Transaction[]
   vehicles     Vehicle[]
@@ -56,8 +70,11 @@ model Goal {
 
 model Vehicle {
   id             String   @id @default(uuid())
+  brand          String?
   model          String
+  year           String?
   fuelType       FuelType
+  fipeCode       String?
   avgConsumption Float
   userId         String
   user           User     @relation(fields: [userId], references: [id])
@@ -88,6 +105,8 @@ enum FuelType {
   ETHANOL
   DIESEL
   ELECTRIC
+  HYBRID
+  FLEX
 }
 
 enum PlaceType {
