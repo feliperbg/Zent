@@ -39,22 +39,24 @@ export function PersonalDataForm({ user }: { user: UserData }) {
     const [verifying, setVerifying] = useState(false);
     const [verificationSent, setVerificationSent] = useState(false);
 
+    const maskCPF = (value: string) => {
+        const v = value.replace(/\D/g, '').slice(0, 11);
+        return v
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    };
+
     // Form States
     const [name, setName] = useState(user.name || '');
     const [email, setEmail] = useState(user.email || '');
-    const [cpf, setCpf] = useState(user.cpf || '');
+    const [cpf, setCpf] = useState(maskCPF(user.cpf || ''));
     const [birthDate, setBirthDate] = useState(
         user.birthDate ? new Date(user.birthDate).toISOString().split('T')[0] : ''
     );
 
     const handleCpfChange = (value: string) => {
-        // Simple CPF Mask 000.000.000-00
-        const v = value.replace(/\D/g, '').slice(0, 11);
-        const masked = v
-            .replace(/(\d{3})(\d)/, '$1.$2')
-            .replace(/(\d{3})(\d)/, '$1.$2')
-            .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-        setCpf(masked);
+        setCpf(maskCPF(value));
     };
 
     const handleSave = async (e: React.FormEvent) => {

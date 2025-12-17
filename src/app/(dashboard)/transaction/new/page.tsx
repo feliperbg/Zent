@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default async function NewTransactionPage({
     searchParams,
 }: {
-    searchParams: { [key: string]: string | string[] | undefined };
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
     const session = await getSession();
 
@@ -15,7 +15,7 @@ export default async function NewTransactionPage({
         redirect('/login');
     }
 
-    const typeParam = searchParams.type;
+    const { type: typeParam } = await searchParams;
     const initialType = (typeParam === 'EXPENSE' ? 'EXPENSE' : 'INCOME');
     const title = initialType === 'INCOME' ? 'Nova Receita' : 'Nova Despesa';
 

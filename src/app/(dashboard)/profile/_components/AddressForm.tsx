@@ -14,8 +14,16 @@ export function AddressForm({ user }: AddressProps) {
     const [loading, setLoading] = useState(false);
     const [cepLoading, setCepLoading] = useState(false);
 
+    const maskCEP = (value: string) => {
+        let v = value.replace(/\D/g, '').slice(0, 8);
+        if (v.length > 5) {
+            v = v.slice(0, 5) + '-' + v.slice(5);
+        }
+        return v;
+    };
+
     // Form States
-    const [cep, setCep] = useState(user.cep || '');
+    const [cep, setCep] = useState(maskCEP(user.cep || ''));
     const [street, setStreet] = useState(user.street || '');
     const [number, setNumber] = useState(user.number || '');
     const [complement, setComplement] = useState(user.complement || ''); // New field
@@ -24,14 +32,7 @@ export function AddressForm({ user }: AddressProps) {
     const [state, setState] = useState(user.state || '');
 
     const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 8) value = value.slice(0, 8);
-
-        if (value.length > 5) {
-            value = value.slice(0, 5) + '-' + value.slice(5);
-        }
-
-        setCep(value);
+        setCep(maskCEP(e.target.value));
     };
 
     const handleCepSearch = async () => {
@@ -68,8 +69,13 @@ export function AddressForm({ user }: AddressProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 space-y-6">
-            <h2 className="text-lg font-semibold text-slate-900 border-b pb-2">Endereço</h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+                <div>
+                    <h3 className="font-semibold text-slate-900">Endereço Pessoal</h3>
+                    <p className="text-sm text-slate-500">Seu endereço principal para entregas.</p>
+                </div>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                 <div className="md:col-span-4 space-y-2">

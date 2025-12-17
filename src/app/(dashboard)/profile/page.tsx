@@ -2,8 +2,8 @@ import { getSession } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 import { PersonalDataForm } from './_components/PersonalDataForm';
-import { AddressForm } from './_components/AddressForm';
 import { VehicleList } from './_components/VehicleList';
+import { MyAddresses } from './_components/MyAddresses';
 import { User, Mail, Shield } from 'lucide-react';
 
 export default async function ProfilePage() {
@@ -15,7 +15,7 @@ export default async function ProfilePage() {
 
     const user = await prisma.user.findUnique({
         where: { id: session.id as string },
-        include: { vehicles: true }
+        include: { vehicles: true, savedPlaces: true }
     });
 
     if (!user) redirect('/login');
@@ -49,7 +49,7 @@ export default async function ProfilePage() {
 
                 {/* Side by Side Forms */}
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
-                    <AddressForm user={user} />
+                    <MyAddresses user={user} />
                     <VehicleList userId={user.id} vehicles={user.vehicles} />
                 </div>
             </div>

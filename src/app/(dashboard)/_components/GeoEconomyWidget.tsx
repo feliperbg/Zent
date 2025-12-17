@@ -40,7 +40,6 @@ export function GeoEconomyWidget({ transactions }: GeoEconomyWidgetProps) {
                                 </p>
                             </div>
                             <div className="font-medium text-emerald-600 text-sm">
-                                +R$ 2,50
                                 {/* Mock value for now */}
                             </div>
                         </div>

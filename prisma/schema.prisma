@@ -16,6 +16,8 @@ model User {
   birthDate    DateTime?
   emailVerified DateTime?
   verificationToken String?
+  resetPasswordToken String?
+  resetPasswordExpires DateTime?
   password     String
   plan         PlanType      @default(FREE)
   createdAt    DateTime      @default(now())
@@ -31,8 +33,11 @@ model User {
   state        String?
   
   goals        Goal[]
+
   transactions Transaction[]
   vehicles     Vehicle[]
+  fixedExpenses FixedExpense[]
+  savedPlaces  Place[]
 }
 
 model Transaction {
@@ -56,6 +61,7 @@ model Category {
   name         String
   icon         String?
   transactions Transaction[]
+  fixedExpenses FixedExpense[]
 }
 
 model Goal {
@@ -86,7 +92,11 @@ model Place {
   type         PlaceType
   latitude     Float
   longitude    Float
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
   transactions Transaction[]
+
+  // No unique constraint on name anymore to avoid issues
 }
 
 enum PlanType {
@@ -109,9 +119,38 @@ enum FuelType {
   FLEX
 }
 
+
 enum PlaceType {
   HOME
   WORK
   STORE
   OTHER
+}
+
+model FixedExpense {
+  id          String   @id @default(uuid())
+  description String
+  amount      Decimal
+  day         Int
+  type        TxType
+  userId      String
+  categoryId  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id])
+  category    Category? @relation(fields: [categoryId], references: [id])
+}
+
+model LocationCache {
+  id          String   @id @default(uuid())
+  latitude    Float
+  longitude   Float
+  name        String
+  address     String?
+  googleId    String?
+  category    String?
+  createdAt   DateTime @default(now())
+  
+  @@index([latitude, longitude])
 }
