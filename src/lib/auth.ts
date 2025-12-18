@@ -13,7 +13,7 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
     return await compare(password, hash);
 }
 
-export async function signToken(payload: { id: string; email: string }) {
+export async function signToken(payload: { id: string; email: string; name?: string | null; plan?: string | null }) {
     return await new SignJWT(payload)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
@@ -35,7 +35,6 @@ export async function verifyToken(token: string) {
 export async function getSession() {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
-    console.log(token);
     if (!token) return null;
     return await verifyToken(token);
 }

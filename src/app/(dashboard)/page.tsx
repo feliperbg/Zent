@@ -1,28 +1,53 @@
+import { getSession } from '@/lib/auth';
+import prisma from '@/lib/prisma';
 import { financeService } from '@/lib/financeService';
-import { TransactionForm } from './_components/TransactionForm';
-
-// Mock user ID for demonstration
-const MOCK_USER_ID = 'demo-user-123';
+import { DashboardHeader } from './_components/DashboardHeader';
+import { KpiCards } from './_components/KpiCards';
+import { GoalsWidget } from './_components/GoalsWidget';
+import { ExpenseChart } from './_components/ExpenseChart';
+import { GeoEconomyWidget } from './_components/GeoEconomyWidget';
+import { Fab } from './_components/Fab';
+import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
-    // VIEW calls SERVICE directly for read operations (Server Components pattern)
-    const balance = await financeService.calculateBalance(MOCK_USER_ID);
+    const session = await getSession();
+
+    if (!session) {
+        redirect('/login');
+    }
+
+    console.log(session);
+    const userId = session.id as string;
+    const userName = (session as any).name || (session.email as string)?.split('@')[0] || "Usuário";
+
+    // Fetch real data
+    const dashboardData = await financeService.getDashboardData(userId);
 
     return (
-        <div className="p-8">
-            <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+        <div className="min-h-screen p-6 md:p-8 pb-24">
+            <div className="max-w-7xl mx-auto space-y-6">
+                <DashboardHeader
+                    userName={userName}
+                    freeMoney={dashboardData.freeMoney || 0}
+                />
 
-            <div className="p-4 border rounded shadow mb-6">
-                <h2 className="text-xl">Saldo Atual</h2>
-                <p className="text-3xl font-mono">R$ {balance.toFixed(2)}</p>
+                <KpiCards
+                    monthIncome={dashboardData.monthIncome || 0}
+                    monthExpense={dashboardData.monthExpense || 0}
+                    routeEconomy={dashboardData.routeEconomy || 0}
+                />
+
+                <GoalsWidget goals={dashboardData.goals || []} />
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <ExpenseChart data={dashboardData.chartData || []} />
+                    <GeoEconomyWidget transactions={dashboardData.recentTransactions || []} />
+                </div>
             </div>
 
-            <div className="p-4 border rounded shadow">
-                <h2 className="text-xl mb-4">Nova Transação (MVC Action Test)</h2>
-                <TransactionForm userId={MOCK_USER_ID} />
-            </div>
+            <Fab />
         </div>
     );
 }

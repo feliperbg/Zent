@@ -29,7 +29,7 @@ export default function LoginPage() {
 
             if (res.ok) {
                 router.refresh();
-                router.push('/dashboard');
+                router.push('/');
             } else {
                 const data = await res.json();
                 setError(data.error || 'Login failed');
@@ -77,9 +77,12 @@ export default function LoginPage() {
                         <label className="text-sm font-semibold text-gray-700" htmlFor="password">
                             Senha
                         </label>
-                        <button type="button" className="text-xs font-semibold text-emerald-600 hover:text-emerald-500">
+                        <Link
+                            href="/forgot-password"
+                            className="text-xs font-semibold text-emerald-600 hover:text-emerald-500"
+                        >
                             Esqueceu a senha?
-                        </button>
+                        </Link>
                     </div>
                     <input
                         id="password"
@@ -90,6 +93,18 @@ export default function LoginPage() {
                         placeholder="••••••••••••"
                         required
                     />
+                </div>
+
+                <div className="flex items-center">
+                    <input
+                        id="remember-me"
+                        name="remember-me"
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-600"
+                    />
+                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                        Lembrar-me
+                    </label>
                 </div>
 
                 <button
