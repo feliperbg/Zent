@@ -1,8 +1,16 @@
 {
+  "/(auth)/forgot-password/page": "app/(auth)/forgot-password/page.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(auth)/register/page": "app/(auth)/register/page.js",
   "/(dashboard)/geo-savings/page": "app/(dashboard)/geo-savings/page.js",
   "/(dashboard)/page": "app/(dashboard)/page.js",
   "/(dashboard)/planning/page": "app/(dashboard)/planning/page.js",
   "/(dashboard)/profile/page": "app/(dashboard)/profile/page.js",
   "/(dashboard)/transaction/new/page": "app/(dashboard)/transaction/new/page.js",
-  "/(dashboard)/transactions/page": "app/(dashboard)/transactions/page.js"
+  "/(dashboard)/transactions/page": "app/(dashboard)/transactions/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/forgot-password/route": "app/api/auth/forgot-password/route.js",
+  "/api/auth/login/route": "app/api/auth/login/route.js",
+  "/api/auth/logout/route": "app/api/auth/logout/route.js",
+  "/api/auth/register/route": "app/api/auth/register/route.js"
 }
